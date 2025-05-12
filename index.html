@@ -1,0 +1,44 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>3D旋转图片轮播</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="carousel">
+        <div class="img" style="background-image: url('image-1.jpg');"></div>
+        <div class="img" style="background-image: url('image-2.jpg');"></div>
+        <div class="img" style="background-image: url('image-3.jpg');"></div>
+        <div class="img" style="background-image: url('image-4.jpg');"></div>
+    </div>
+
+    <script>
+        const carousel = document.getElementById('carousel');
+        let currentRotation = 0;
+        let isRotating = false;
+        let rotationInterval;
+        carousel.addEventListener('mouseenter', () => {
+            isRotating = true;
+            const startTime = Date.now();
+            const startRotation = currentRotation;
+
+            rotationInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                
+                currentRotation = startRotation + (elapsed / 12000) * 360;
+                carousel.style.transform = `rotateY(${currentRotation % 360}deg)`;
+            }, 16); 
+        });
+
+       
+        carousel.addEventListener('mouseleave', () => {
+            isRotating = false;
+            clearInterval(rotationInterval);
+            
+            carousel.style.transform = `rotateY(${currentRotation % 360}deg)`;
+        });
+    </script>
+</body>
+</html>

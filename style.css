@@ -1,0 +1,40 @@
+/* style.css */
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    perspective: 1000px;
+    background-color: rgb(103, 100, 100);
+    background-size: 100%;
+}
+.container {
+    width: 270px; 
+    height: 360px;
+    transform-style: preserve-3d;
+    position: relative;
+    margin: auto;
+    margin-top: 200px;
+}
+.img {
+    width: 270px;  
+    height: 360px; 
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.img:nth-child(1) {
+    transform: rotateY(0deg) translateZ(350px);
+}
+.img:nth-child(2) {
+    transform: rotateY(90deg) translateZ(300px);
+}
+.img:nth-child(3) {
+    transform: rotateY(180deg) translateZ(250px);
+}
+.img:nth-child(4) {
+    transform: rotateY(270deg) translateZ(200px);
+}
