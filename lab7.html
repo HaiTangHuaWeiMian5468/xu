@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>七彩灯演示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361EE',
+                        secondary: '#3A0CA3',
+                        accent: '#F72585',
+                        accent: '#F72585',
+                        dark: '#1E1E24',
+                        light: '#F8F9FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .light-glow {
+                filter: drop-shadow(0 0 15px currentColor);
+            }
+            .control-btn {
+                @apply px-6 py-3 rounded-full text-white font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2;
+            }
+            .light-container {
+                @apply flex flex-wrap justify-center gap-6 md:gap-10 p-6 md:p-10;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-light font-sans">
+    <div class="container mx-auto px-4 py-12 max-w-5xl">
+        <header class="text-center mb-12">
+            <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">七彩灯演示</h1>
+            <p class="text-gray-300 text-lg max-w-2xl mx-auto">七个炫彩灯光，每个都有独特的颜色变化序列，点击按钮控制它们的闪烁效果</p>
+        </header>
+
+        <main class="bg-dark/60 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden">
+            <div class="light-container" id="lightsContainer">
+            </div>
+
+            <div class="bg-gray-900/80 p-6 border-t border-gray-700">
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button id="startBtn" class="control-btn bg-primary hover:bg-primary/80 focus:ring-primary/50">
+                        <i class="fa fa-play mr-2"></i> 启动
+                    </button>
+                    <button id="stopBtn" class="control-btn bg-accent hover:bg-accent/80 focus:ring-accent/50" disabled>
+                        <i class="fa fa-stop mr-2"></i> 停止
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>© 2025 七彩灯演示 | 使用HTML5, CSS3和JavaScript构建</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const baseColors = [
+                '#FF5E5E', // 红色
+                '#FFD166', // 黄色
+                '#06D6A0', // 绿色
+                '#118AB2', // 蓝色
+                '#073B4C', // 深蓝色
+                '#9381FF', // 紫色
+                '#F72585'  // 粉色
+            ];
+
+            const colorSequences = [
+                ['#FF5E5E', '#FFD166', '#06D6A0', '#118AB2', '#073B4C', '#9381FF', '#F72585'],
+                ['#FFD166', '#06D6A0', '#118AB2', '#073B4C', '#9381FF', '#F72585', '#FF5E5E'],
+                ['#06D6A0', '#118AB2', '#073B4C', '#9381FF', '#F72585', '#FF5E5E', '#FFD166'],
+                ['#118AB2', '#073B4C', '#9381FF', '#F72585', '#FF5E5E', '#FFD166', '#06D6A0'],
+                ['#073B4C', '#9381FF', '#F72585', '#FF5E5E', '#FFD166', '#06D6A0', '#118AB2'],
+                ['#9381FF', '#F72585', '#FF5E5E', '#FFD166', '#06D6A0', '#118AB2', '#073B4C'],
+                ['#F72585', '#FF5E5E', '#FFD166', '#06D6A0', '#118AB2', '#073B4C', '#9381FF']
+            ];
+
+            const lightsContainer = document.getElementById('lightsContainer');
+            
+            const lightTimers = [];
+            
+            for (let i = 0; i < 7; i++) {
+                const light = document.createElement('div');
+                light.id = `light-${i}`;
+                light.className = 'w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-gray-800 transition-all duration-300 ease-in-out transform hover:scale-105';
+                light.style.backgroundColor = baseColors[i];
+                light.style.boxShadow = `0 0 20px ${baseColors[i]}`;
+                
+                lightsContainer.appendChild(light);
+            }
+            
+            const lights = document.querySelectorAll('[id^="light-"]');
+            
+            document.getElementById('startBtn').addEventListener('click', () => {
+                startAnimation();
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+            });
+            
+            document.getElementById('stopBtn').addEventListener('click', () => {
+                stopAnimation();
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+            });
+            
+            function startAnimation() {
+                lights.forEach((light, index) => {
+                    let colorIndex = 0;
+                    const sequence = colorSequences[index];
+                    
+                    const timer = setInterval(() => {
+                        colorIndex = (colorIndex + 1) % sequence.length;
+                        light.style.backgroundColor = sequence[colorIndex];
+                        light.style.boxShadow = `0 0 25px ${sequence[colorIndex]}`;
+                       
+                        light.style.transition = 'background-color 0.5s ease, box-shadow 0.5s ease';
+                    }, 1000);
+                    
+                    lightTimers.push(timer);
+                });
+            }
+            
+            function stopAnimation() {
+                lightTimers.forEach(timer => clearInterval(timer));
+                lightTimers.length = 0;
+                
+                lights.forEach((light, index) => {
+                    light.style.backgroundColor = baseColors[index];
+                    light.style.boxShadow = `0 0 20px ${baseColors[index]}`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+    
