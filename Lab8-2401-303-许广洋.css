@@ -1,0 +1,60 @@
+/* Lab8-2401-303-许广洋.css */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse-custom {
+    animation: pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.student-item {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem; /* 圆角从0.5rem改为0.75rem */
+    text-align: center;
+    font-weight: 600; /* 字体粗细从500改为600 */
+    transition: all 0.3s ease;
+    cursor: default;
+    background-color: white;
+    border: 1px solid rgba(144, 41, 246, 0.1); /* 添加浅色边框 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 新增基础阴影 */
+}
+
+.student-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 增强悬浮阴影 */
+}
+
+.student-item.active {
+    background-color: #9029f6; /* 关键色修改为深紫色 */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(144, 41, 246, 0.3); /* 选中状态阴影增强 */
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
